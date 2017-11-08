@@ -1,17 +1,20 @@
 package com.example.marit.maritbeerepoot_pset2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 public class ChooseStory extends AppCompatActivity {
 
     String madlib;
     String[] choose = {"madlib0_simple.txt", "madlib1_tarzan.txt", "madlib2_university.txt", "madlib3_clothes.txt", "madlib4_dance.txt"};
-
+    Story story;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,7 @@ public class ChooseStory extends AppCompatActivity {
     public class Checkboxes implements View.OnClickListener {
 
         @Override
-        public void Click(View view) {
+        public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.simple:
                     madlib = "madlib0_simple.txt";
@@ -58,9 +61,25 @@ public class ChooseStory extends AppCompatActivity {
         }
     }
 
-    public void goToSecond(View view) {
-        Intent intent = new Intent(this, SecondActivity.class);
-        startActivity(intent);
 
+    // Create a new instance for class
+    public Story readchosenfile(String chosenStory) {
+        Context context = getApplicationContext();
+        try {
+            InputStream stream = context.getAssets().open(madlib);
+            story = new Story(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return story;
+    }
+
+
+    // Go to next activity
+    public void goToSecond() {
+        Intent intent = new Intent(this, SecondActivity.class);
+        Story chosenstory = readchosenfile(madlib);
+        intent.putExtra("madlibstory",chosenstory);
+        startActivity(intent);
     }
 }
