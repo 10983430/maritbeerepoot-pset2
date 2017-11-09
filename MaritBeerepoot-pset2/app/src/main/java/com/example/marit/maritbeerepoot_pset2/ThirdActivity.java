@@ -27,5 +27,6 @@ public class ThirdActivity extends AppCompatActivity {
     public void goToFirst(View view){
         Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
+        finish();
     }
 }

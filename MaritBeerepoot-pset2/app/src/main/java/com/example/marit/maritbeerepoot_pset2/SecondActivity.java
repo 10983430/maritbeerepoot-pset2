@@ -35,9 +35,14 @@ public class SecondActivity extends AppCompatActivity {
         // Set the remaing words
         TextView remainder = (TextView) findViewById(R.id.numberwords);
         number = madlib.getPlaceholderRemainingCount();
-        remainder.setText(String.format("%d", number));
+        remainder.setText(number + " word(s) left");
+
+        // Set the text placeholder
+        TextView placetext = (TextView) findViewById(R.id.placeholdertext);
+        placetext.setText("This word should be a/an " + replacement);
 
         findViewById(R.id.placeholder).setOnClickListener(new Listen());
+        findViewById(R.id.ok).setOnClickListener(new Click());
     }
 
     public class Listen implements View.OnClickListener {
@@ -64,7 +69,12 @@ public class SecondActivity extends AppCompatActivity {
             // Set the remaing words
             TextView remainder = (TextView) findViewById(R.id.numberwords);
             number = madlib.getPlaceholderRemainingCount();
-            remainder.setText(String.format("%d", number));
+            remainder.setText(number + " word(s) left");
+
+            // Set the text placeholder
+            TextView placetext = (TextView) findViewById(R.id.placeholdertext);
+            placetext.setText("This word should be a/an " + replacement);
+
 
             if (madlib.isFilledIn() == true) {
                 finalstory = madlib.toString();
@@ -73,10 +83,43 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
+    public class Click implements View.OnClickListener {
+        public void onClick(View view) {
+            EditText placeholder = (EditText) findViewById(R.id.placeholder);
+            String input = placeholder.getText().toString();
+
+            if(input.length() != 0){
+                placeholder.setText("");
+                madlib.fillInPlaceholder(input);
+
+                //Set the placeholder
+                EditText placeholder2 = (EditText) findViewById(R.id.placeholder);
+                replacement = madlib.getNextPlaceholder();
+                placeholder2.setHint(replacement);
+
+                // Set the remaing words
+                TextView remainder = (TextView) findViewById(R.id.numberwords);
+                number = madlib.getPlaceholderRemainingCount();
+                remainder.setText(number + " word(s) left");
+
+                // Set the text placeholder
+                TextView placetext = (TextView) findViewById(R.id.placeholdertext);
+                placetext.setText("This word should be a/an " + replacement);
+
+
+                if (madlib.isFilledIn() == true) {
+                    finalstory = madlib.toString();
+                    goToThird();
+                }
+            }
+        }
+    }
+
     public void goToThird() {
         Intent intent = new Intent(this, ThirdActivity.class);
         intent.putExtra("finalstory",finalstory);
         startActivity(intent);
+        finish();
     }
 
 }

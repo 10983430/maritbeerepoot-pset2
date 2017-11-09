@@ -33,6 +33,7 @@ public class ChooseStory extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                // Check which buttom is selected
                 case R.id.simple:
                     madlib = "madlib0_simple.txt";
                     goToSecond();
@@ -42,7 +43,7 @@ public class ChooseStory extends AppCompatActivity {
                     goToSecond();
                     break;
                 case R.id.university:
-                    madlib = "madlib2_universiry.txt";
+                    madlib = "madlib2_university.txt";
                     goToSecond();
                     break;
                 case R.id.clothes:
@@ -81,5 +82,6 @@ public class ChooseStory extends AppCompatActivity {
         Story chosenstory = readchosenfile(madlib);
         intent.putExtra("madlibstory",chosenstory);
         startActivity(intent);
+        finish();
     }
 }
